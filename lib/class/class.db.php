@@ -38,13 +38,18 @@ class mysql{
 //questo metodo può essere richiamato solo da altri metodi 
 	protected  function connect(){
 
-		$esito_connessione = $this->db=mysql_connect($this->host,$this->user,$this->password);
+		$this->db=mysqli_connect($this->host,$this->user,$this->password,$this->database);
+		if (!mysqli_connect_errno()) {
+			return true;
+		}else{
+			echo "<p style=\"color:red\">Non mi son collegato al db.<br/>Ricontrolla i parametri<br>".mysqli_connect_errno()." </p>";
+			return false;
+		}		
 		
-		
-		
+		/*
 		if($esito_connessione){
 			//connessione andata a buon fine
-			$esito_connessione_db = mysql_select_db($this->database,$this->db); 	
+			$esito_connessione_db = mysql_select_db(,$this->db); 	
 				if($esito_connessione_db){
 					return $esito_connessione_db;
 				}else{
@@ -57,6 +62,10 @@ class mysql{
 			echo "<p style=\"color:red\">Non mi son collegato al db.<br/>Ricontrolla i parametri </p>";
 			return false;		
 		}	
+		*/
+		
+		
+		
 	}
 	
 	/*
@@ -140,7 +149,7 @@ class mysql{
 	
 //metodo chiusura connessione
 	public function close() {
-		return mysql_close($this->db);
+		return mysqli_close($this->db);
 	}
 
 
@@ -153,8 +162,8 @@ class mysql{
 		//echo  $this->debug();
 		 
 		if($this->connect()){
-			mysql_query('SET NAMES utf8');
-			$esito = mysql_query($sql);
+			mysqli_query($this->db,'SET NAMES utf8');
+			$esito = mysqli_query($this->db,$sql);
 			if(!$esito||$esito==''){
 			
 				
@@ -169,15 +178,15 @@ class mysql{
 
 
 //metodo che legge una query select restituendo array	
-	public function read($tabella,$filtro=''){
+	public function read($tabella,$filtro='',$campi='*'){
 		$dati='';
 		
 		if($filtro !='')
 		$filtro =' AND '.$filtro;
 		
-		$ris=$this->query("SELECT * FROM ".$this->pre.$tabella." where 1 $filtro");
+		$ris=$this->query("SELECT $campi FROM ".$this->pre.$tabella." where 1 $filtro");
 		if($ris!=''){
-				while ($riga=mysql_fetch_assoc($ris)){
+				while ($riga=mysqli_fetch_assoc($ris)){
 					
 					$dati[]=$this->pulisci($riga,1);
 				}
@@ -224,7 +233,7 @@ class mysql{
 		$sql = "SELECT ".$id." from ".$this->pre.$tabella."  order by  ".$id." DESC";
 		$ris=$this->query($sql);
 		if($ris!=''){
-			$riga= mysql_fetch_array($ris);
+			$riga= mysqli_fetch_array($ris);
 			return $riga[0];
 		}else{
 			return 0;
@@ -309,7 +318,7 @@ class mysql{
 		$filtro =' AND '.$filtro;
 		$ris=$this->query("SELECT count(*) FROM ".$this->pre.$tabella." WHERE 1 $filtro");
 		if($ris!=''){
-			$riga= mysql_fetch_array($ris);
+			$riga= mysqli_fetch_array($ris);
 			return $riga[0];
 		}else{
 			return 0;
@@ -325,7 +334,7 @@ class mysql{
 	
 		$ris=$this->query($sql);
 		if($ris!=''){
-				while ($riga=mysql_fetch_assoc($ris)){
+				while ($riga=mysqli_fetch_assoc($ris)){
 					$dati[]=$this->pulisci($riga,1);
 				}
 			if($corto==1){
@@ -361,7 +370,7 @@ class mysql{
 	
 	$ris=$this->query($sql);
 
-	$riga=mysql_fetch_array($ris);
+	$riga=mysqli_fetch_array($ris);
 	return $riga[0];
 }
 

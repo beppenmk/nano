@@ -26,7 +26,7 @@ $all=array(1);//array con tutti i tipi possibili (scorciatoia)
 
 
 /*imposto se visualizzare il debug o no */
-$debug=0;#1 mostra errori
+$debug=1;#1 mostra errori
 
 
 

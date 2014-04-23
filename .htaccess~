@@ -1,0 +1,6 @@
+RewriteEngine On
+
+
+ 
+RewriteRule ^(.*)/(.*).html$ index.php?azione=$2&id=$1 [l]
+RewriteRule ^(.*).html$ index.php?azione=$1 [l]

@@ -39,6 +39,9 @@ if(isset($_GET['azione'])&&($_GET['azione']=='install')){
 
 
 $db =  new mysql($database,$host,$user,$password,$root,$azione);
+
+
+
 $less = new lessc;
 
 
