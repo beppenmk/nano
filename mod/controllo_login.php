@@ -25,7 +25,7 @@ if(($login=='')&&($psw=='')){
 //cripto la password x confronto
 $psw = md5($psw);
 
-$db= new mysql($database,$host,$user,$password);
+
 
 $sql ="
 SELECT  
@@ -39,25 +39,23 @@ AND
 psw = '$psw'
 ";
 
+
 $risultato  = $db->query($sql);
+foreach ($risultato as $riga) {
 
-$riga =mysql_fetch_assoc($risultato);
-
-
-
-if($riga){
-	#echo "si";exit;
-	$_SESSION[$database]['logged']=1;
-	$_SESSION[$database]['log_tipe']=$riga['tipo'];
-	$_SESSION[$database]['log_id']=$riga['id'];
-	header("location:$root/index.php?azione=p_pagine");
-	exit;
-}else{
-		#echo "no";exit;
-	header("location:$root/index.php?azione=login&err=4");
-	exit;
+	if($riga){
+		#echo "si";exit;
+		$_SESSION[$database]['logged']=1;
+		$_SESSION[$database]['log_tipe']=$riga['tipo'];
+		$_SESSION[$database]['log_id']=$riga['id'];
+		header("location:$root/index.php?azione=p_pagine");
+		exit;
+	}else{
+			#echo "no";exit;
+		header("location:$root/index.php?azione=login&err=4");
+		exit;
+	}
 }
-
 
 
 
