@@ -51,13 +51,13 @@ foreach ($risultato as $riga) {
 		header("location:$root/index.php?azione=p_pagine");
 		exit;
 	}else{
-			#echo "no";exit;
-		header("location:$root/index.php?azione=login&err=4");
-		exit;
+	
 	}
 }
 
-
+		#echo "no";exit;
+		header("location:$root/index.php?azione=login&err=4");
+		exit;
 
 
 
